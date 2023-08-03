@@ -5,9 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.bstudio.composestarted.AddPostScreen
-import com.bstudio.composestarted.HomeScreen
 import com.bstudio.composestarted.NotificationScreen
 import com.bstudio.composestarted.SecondScreen
+import com.bstudio.composestarted.ui.screen.HomeScreen
 
 @Composable
 fun NavigationGraph(navHostController: NavHostController) {
@@ -22,7 +22,7 @@ fun NavigationGraph(navHostController: NavHostController) {
             NotificationScreen()
         }
 
-        composable(NavigationRoute.SECOND_SCREEN_ROUTE) {
+        composable(Destinations.SecondScreen.route) {
             SecondScreen()
         }
 
