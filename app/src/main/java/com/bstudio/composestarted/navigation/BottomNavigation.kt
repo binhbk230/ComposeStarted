@@ -35,7 +35,7 @@ fun MyBottomNavigation(navController: NavController) {
                     restoreState = true
                 }
             },
-            selected = currentRoute == item.screen_route
+            selected = currentRoute == item.screen_route || (currentRoute == Destinations.HomeScreen.route && item.screen_route == BottomNavItem.Home.screen_route)
                 )
         }
     }

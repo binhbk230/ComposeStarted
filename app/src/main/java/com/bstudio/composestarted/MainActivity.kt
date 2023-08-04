@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.bstudio.composestarted.navigation.BottomNavItem
+import com.bstudio.composestarted.navigation.Destinations
 import com.bstudio.composestarted.navigation.MyBottomNavigation
 import com.bstudio.composestarted.navigation.NavigationGraph
 import com.bstudio.composestarted.ui.theme.ComposeStartedTheme
@@ -34,7 +38,16 @@ class MainActivity : ComponentActivity() {
             ComposeStartedTheme {
                 val navController = rememberNavController()
                 Scaffold(bottomBar = {
-                    MyBottomNavigation(navController)
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    if (navBackStackEntry?.destination?.route in arrayListOf(
+                            Destinations.HomeScreen.route,
+                            BottomNavItem.Home.screen_route,
+                            BottomNavItem.AddPost.screen_route,
+                            BottomNavItem.Notification.screen_route
+                        )
+                    ) {
+                        MyBottomNavigation(navController)
+                    }
                 }) {
                     NavigationGraph(navHostController = navController)
                 }
@@ -59,8 +72,6 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
-
-
 
 
 @Composable
