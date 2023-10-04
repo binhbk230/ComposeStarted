@@ -25,7 +25,6 @@ fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.teal_700))
             .wrapContentSize(Alignment.Center)
     ) {
         MyButton(content = "Go to second screen", modifier = Modifier.align(Alignment.CenterHorizontally)) {

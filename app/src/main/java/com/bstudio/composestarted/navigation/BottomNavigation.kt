@@ -1,6 +1,7 @@
 package com.bstudio.composestarted.navigation
 
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -19,7 +20,7 @@ fun MyBottomNavigation(navController: NavController) {
         BottomNavItem.Notification,
     )
 
-    NavigationBar(containerColor = Color.Cyan, contentColor = Color.White) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer, contentColor =  MaterialTheme.colorScheme.onPrimary) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach {
