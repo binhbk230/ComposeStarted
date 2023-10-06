@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.bstudio.composestarted'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.bstudio.composestarted"
         minSdk 24
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -70,4 +70,6 @@ dependencies {
 
     // Koin for Android
     implementation "io.insert-koin:koin-androidx-compose:3.4.3"
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
 }
