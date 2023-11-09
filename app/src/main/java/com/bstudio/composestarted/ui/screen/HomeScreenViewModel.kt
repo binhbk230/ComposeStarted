@@ -2,15 +2,18 @@ package com.bstudio.composestarted.ui.screen
 
 import androidx.lifecycle.viewModelScope
 import com.bstudio.composestarted.base.BaseViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-internal class HomeScreenViewModel: BaseViewModel<HomeScreenState, HomeScreenEvent>(HomeScreenState.Loading) {
+internal class HomeScreenViewModel: BaseViewModel<HomeScreenState, HomeScreenEvent>(HomeScreenState.Idle) {
 
     override fun processUiEvent(event: HomeScreenEvent) {
         viewModelScope.launch {
             when(event) {
                 is HomeScreenEvent.LoadData -> {
                     updateState(HomeScreenState.Loading)
+                    delay(3000)
+                    updateState(HomeScreenState.SuccessData(""))
                 }
                 is HomeScreenEvent.InputData -> {
                     updateState(HomeScreenState.SuccessData(event.inputData))
@@ -26,6 +29,7 @@ internal class HomeScreenViewModel: BaseViewModel<HomeScreenState, HomeScreenEve
 }
 
 internal sealed class HomeScreenState {
+    object Idle: HomeScreenState()
     class SuccessData(val name: String): HomeScreenState()
     class Error(val error: Throwable): HomeScreenState()
     object Loading: HomeScreenState()
