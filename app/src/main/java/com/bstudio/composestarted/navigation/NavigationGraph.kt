@@ -3,7 +3,6 @@ package com.bstudio.composestarted.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -21,7 +20,7 @@ fun NavigationGraph(navHostController: NavHostController) {
         composable(BottomNavItem.AddPost.screen_route) {
             AddPostScreen()
         }
-        composable(BottomNavItem.Notification.screen_route) {
+        composable(BottomNavItem.Settings.screen_route) {
             NotificationScreen()
         }
 

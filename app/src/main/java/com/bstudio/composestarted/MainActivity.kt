@@ -4,19 +4,23 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,14 +32,21 @@ import com.bstudio.composestarted.navigation.Destinations
 import com.bstudio.composestarted.navigation.MyBottomNavigation
 import com.bstudio.composestarted.navigation.NavigationGraph
 import com.bstudio.composestarted.ui.theme.ComposeStartedTheme
+import com.bstudio.composestarted.ui.theme.StartedTheme
+import com.bstudio.composestarted.util.SharePrefManager
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
+
 
 class MainActivity : ComponentActivity() {
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeStartedTheme {
+            val viewModel: MainActivityViewModel = koinViewModel()
+            ComposeStartedTheme(startedTheme = viewModel.themeState) {
                 val navController = rememberNavController()
                 Scaffold(bottomBar = {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -43,7 +54,7 @@ class MainActivity : ComponentActivity() {
                             Destinations.HomeScreen.route,
                             BottomNavItem.Home.screen_route,
                             BottomNavItem.AddPost.screen_route,
-                            BottomNavItem.Notification.screen_route
+                            BottomNavItem.Settings.screen_route
                         )
                     ) {
                         MyBottomNavigation(navController)
@@ -55,6 +66,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 @Composable
@@ -68,7 +80,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    ComposeStartedTheme {
+    ComposeStartedTheme(startedTheme = StartedTheme.DARK) {
         Greeting("Android")
     }
 }
@@ -113,19 +125,24 @@ fun AddPostScreen() {
 
 @Composable
 fun NotificationScreen() {
+    val sharePrefManager: SharePrefManager = koinInject()
+    val currentThem = StartedTheme.valueOf(sharePrefManager.getString(SharePrefManager.THEME_KEY, StartedTheme.LIGHT.name))
+    var enableDarkMode by remember {mutableStateOf(currentThem == StartedTheme.DARK)}
     Column(
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
     ) {
-        Text(
-            text = "Notification Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround){
+            Text(text = "Enable dark mode: ")
+            Switch(checked = enableDarkMode, onCheckedChange = {
+                enableDarkMode = it
+                sharePrefManager.putString(
+                    SharePrefManager.THEME_KEY,
+                    if (it) StartedTheme.DARK.name else StartedTheme.LIGHT.name
+                )
+            })
+        }
     }
 }
 
