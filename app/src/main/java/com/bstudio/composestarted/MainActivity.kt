@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -128,6 +129,12 @@ fun NotificationScreen() {
     val sharePrefManager: SharePrefManager = koinInject()
     val currentThem = StartedTheme.valueOf(sharePrefManager.getString(SharePrefManager.THEME_KEY, StartedTheme.LIGHT.name))
     var enableDarkMode by remember {mutableStateOf(currentThem == StartedTheme.DARK)}
+    LaunchedEffect(enableDarkMode) {
+        sharePrefManager.putString(
+            SharePrefManager.THEME_KEY,
+            if (enableDarkMode) StartedTheme.DARK.name else StartedTheme.LIGHT.name
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,10 +144,6 @@ fun NotificationScreen() {
             Text(text = "Enable dark mode: ")
             Switch(checked = enableDarkMode, onCheckedChange = {
                 enableDarkMode = it
-                sharePrefManager.putString(
-                    SharePrefManager.THEME_KEY,
-                    if (it) StartedTheme.DARK.name else StartedTheme.LIGHT.name
-                )
             })
         }
     }
