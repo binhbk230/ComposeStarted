@@ -70,4 +70,6 @@ dependencies {
 
     // Koin for Android
     implementation "io.insert-koin:koin-androidx-compose:3.4.3"
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
 }
